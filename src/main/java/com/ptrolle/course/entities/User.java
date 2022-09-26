@@ -1,14 +1,12 @@
 package com.ptrolle.course.entities;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Objects;
 
 //usamos o serializable para que seja um objeto como cadeia de bytes para facilitar para trafegar na rede
 @Entity
+@Table(name = "tb_user")
 public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
