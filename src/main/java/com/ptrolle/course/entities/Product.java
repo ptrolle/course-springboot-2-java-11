@@ -23,7 +23,8 @@ public class Product implements Serializable {
     //usamos set ao inves de list pois um produto nao poder ter mais de uma categoria
     //set é uma interface e interface nao pode ser instanciado por isso quando instanciamos devemos uma classe que pertence como HashSet
     //instanciamos com new HashSet<>() para nao começar com nulo e sim vazia
-    @Transient
+    @ManyToMany
+    @JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id")) //aqui definimos o nome da tabela e quais as chaves estrangeiras que vao associar categorias a produtos
     private Set<Category> categories = new HashSet<>();
 
     public Product(){
