@@ -1,5 +1,7 @@
 package com.ptrolle.course.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -26,6 +28,9 @@ public class Product implements Serializable {
     @ManyToMany
     @JoinTable(name = "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name = "category_id")) //aqui definimos o nome da tabela e quais as chaves estrangeiras que vao associar categorias a produtos
     private Set<Category> categories = new HashSet<>();
+
+    @OneToMany(mappedBy = "id.product") //estou tento problema para resolver isto
+    private Set<OrderItem> items = new HashSet<>();
 
     public Product(){
     }
@@ -80,6 +85,15 @@ public class Product implements Serializable {
 
     public Set<Category> getCategories() {
         return categories;
+    }
+
+    @JsonIgnore
+    public Set<Order> getOrders(){
+        Set<Order> set = new HashSet<>();
+        for(OrderItem x : items){
+            set.add(x.getOrder());
+        }
+        return set;
     }
 
     @Override
