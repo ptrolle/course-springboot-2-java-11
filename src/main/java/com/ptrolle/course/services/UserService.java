@@ -2,8 +2,11 @@ package com.ptrolle.course.services;
 
 import com.ptrolle.course.entities.User;
 import com.ptrolle.course.repositories.UserRepository;
+import com.ptrolle.course.services.exceptions.DatabaseException;
 import com.ptrolle.course.services.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +35,13 @@ public class UserService {
 
     //deletar usuario pelo id
     public void delete(Long id){
-        repository.deleteById(id);
+        try {
+            repository.deleteById(id);
+        } catch (EmptyResultDataAccessException e){
+            throw new ResourceNotFoundException(id);
+        } catch (DataIntegrityViolationException e){
+            throw new DatabaseException(e.getMessage());
+        }
     }
 
     //update
